@@ -1,3 +1,4 @@
+import os
 from airflow import DAG
 from airflow_dbt.operators.dbt_operator import (
     DbtSeedOperator,
@@ -8,7 +9,7 @@ from airflow_dbt.operators.dbt_operator import (
 from airflow.utils.dates import days_ago
 
 default_args = {
-  'dir': '/srv/app/dbt',
+  'dir': "/root/airflow/dbt",
   'start_date': days_ago(0)
 }
 
