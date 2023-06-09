@@ -1,4 +1,4 @@
-FROM python:3.8-slim-buster
+FROM python:3.9-slim-buster
 
 
 RUN apt update
@@ -18,7 +18,9 @@ RUN apt-get install -y --no-install-recommends \
     lsb-release \
     sasl2-bin \
     sqlite3 \
-    unixodbc
+    unixodbc \
+    libpq-dev \
+    python-dev
 
 # Install Airflow and any additonal dependencies
 WORKDIR /root
