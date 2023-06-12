@@ -1,4 +1,7 @@
-# Airflow Codebase Template
+# Bigeye Training - Sample Repository
+
+This is a [Bigeye](https://bigeye.com) project for demonstration and training purposes. This project utilizes airflow to orchestrate dbt for transformations and Bigeye for data observability/reliability.
+
 
 ### Running Airflow locally
 
@@ -16,33 +19,6 @@ When you're done, simply:
 
         make stop-airflow
 
-### Testing & Linting
-
-Instantiating a local virtual environment is now entirely optional. You can develop entirely through Docker, as Airflow runs inside of docker-compose and `test-docker` and `lint-docker` provide avenues for running those steps without a virtual environment. 
-
-However, not using a virtual environment also means sacrificing any linting/language-server functionality provided by your IDE. To setup your virtual environment:
-
-        make  venv
-
-This project is also fully linted with black and pylint, even using a cool pylint plugin called [pylint-airflow](https://pypi.org/project/pylint-airflow/). To run linting:
-
-With your virtual environment: 
-
-        make lint
-
-With Docker:
-
-        make lint-docker
-
-Any tests can be placed under `tests`, we've already included a few unit tests for validating all of your DAGs and plugins to make sure they're valid to install in Airflow. To run tests:
-
-With your virtual environment:
-
-        make test
-
-Inside Docker:
-        
-        make test-docker
 
 ### Cleaning up your local environment
 
@@ -55,10 +31,6 @@ Reset your local docker-compose:
 Rebuild the local Airflow image for docker-compose (useful if you make changes to the Dockerfile):
         
         make rebuild-airflow
-
-Clean up Pytest artifacts:
-        
-        make clean-pytest
 
 Reset your virtual environment:
 
