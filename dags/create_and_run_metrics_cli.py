@@ -4,12 +4,12 @@ from airflow.utils.dates import days_ago
 from glob import glob
 
 
-BIGCONFIG_FILES = str.join(" -ip ",[filename for filename in glob('/root/airflow/dbt/**/*.bigconfig.yml', recursive=True)])
+BIGCONFIG_FILES = str.join(" -ip ",[f for f in glob('/root/airflow/dbt/**/*.bigconfig.yml', recursive=True)])
 BIGEYE_PROD_WID = 144
 
 
 with DAG(
-    'create_and_run_metrics',
+    'create_and_run_metrics_cli',
     schedule_interval=None,
     start_date=days_ago(0),
     catchup=False,
