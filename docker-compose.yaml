@@ -35,6 +35,7 @@ services:
       - ./dags:/root/airflow/dags
       - ./plugins:/root/airflow/plugins
       - airflow-worker-logs:/root/airflow/logs
+      - ./dbt:/root/airflow/dbt
     ports:
       - "8080:8080"
     command: airflow webserver

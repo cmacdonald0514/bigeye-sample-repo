@@ -15,6 +15,7 @@ else
 	venv/bin/python3 -m pip install --trusted-host pypi.python.org "apache-airflow[${AIRFLOW_EXTRAS}]==${AIRFLOW_VERSION}" --constraint ${CONSTRAINT}  --use-deprecated legacy-resolver
 	venv/bin/python3 -m pip install -r airflow.requirements.txt --use-deprecated legacy-resolver
 	venv/bin/python3 -m pip install -r local.requirements.txt --use-deprecated legacy-resolver
+	venv/bin/python3 -m pip install pyOpenSSL==22.0.0
 endif
 
 # Lints all python files
