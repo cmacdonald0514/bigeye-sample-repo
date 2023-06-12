@@ -1,0 +1,103 @@
+type: BIGCONFIG_FILE
+
+tag_definitions:
+  - tag_id: PRIMARY_KEYS
+    column_selectors:
+      - name: "PROD_*.*.orders.order_id"
+      - name: "PROD_*.*.customer.customer_id"
+      - name: "PROD_*.*.shipment.shipment_id"
+  - tag_id: LOW_CARDINALITY
+    column_selectors:
+      - name: "PROD_*.*.*.shipment.status"
+
+row_creation_times:
+  column_selectors:
+    - name: "PROD_*.*.*.update_timestamp"
+    - name: "PROD_*.*.*.order_timestamp"
+    - name: "PROD_*.*.*.status_timestamp"
+
+saved_metric_definitions:
+  metrics:
+    - saved_metric_id: COMPLETENESS_REQUIRED
+      metric_type:
+        type: PREDEFINED
+        predefined_metric: PERCENT_NULL
+      metric_name: completeness_required
+      description: Requires that field contain a value.  Will alert if the percent null exceeds 0%.
+      threshold:
+        type: CONSTANT
+        upper_bound: 0
+      schedule_frequency:
+        interval_type: MINUTES
+        interval_value: 0
+    - saved_metric_id: UNIQUENESS_REQUIRED
+      metric_type:
+        type: PREDEFINED
+        predefined_metric: COUNT_DUPLICATES
+      metric_name: uniqueness_required
+      description: Requires that a field not contain duplicates.  Will alert if the duplicate count exceeds 0.
+      threshold:
+        type: CONSTANT
+        upper_bound: 0
+      schedule_frequency:
+        interval_type: MINUTES
+        interval_value: 0
+
+tag_deployments:
+  - collection:
+      name: Tunes of our Youth Internal Ops
+      description: Operational checks for primary keys across sources
+    deployments:
+      - tag_id: PRIMARY_KEYS
+        metrics:
+          - saved_metric_id: COMPLETENESS_REQUIRED
+          - saved_metric_id: UNIQUENESS_REQUIRED
+      - tag_id: LOW_CARDINALITY
+        metrics:
+          - metric_type:
+              predefined_metric: COUNT_DISTINCT
+            metric_name: LOW_CARDINALITY
+            description: Expects low, stable cardinality.
+            threshold:
+              type: AUTO
+              sensitivity: MEDIUM
+
+  - collection:
+      name: Order Statistics
+      description: Numeric distributions for unit pricing
+    deployments:
+      - column_selectors:
+          - name: "PROD_*.*.*.price_per_unit"
+        metrics:
+          - metric_type:
+              predefined_metric: AVERAGE
+            metric_name: '[Average] Unit Price'
+            schedule_frequency:
+              interval_type: MINUTES
+              interval_value: 0
+          - metric_type:
+              predefined_metric: VARIANCE
+            metric_name: '[Variance] Unit Price'
+            schedule_frequency:
+              interval_type: MINUTES
+              interval_value: 0
+          - metric_type:
+              predefined_metric: MAX
+            metric_name: '[Max] Unit Price'
+            schedule_frequency:
+              interval_type: MINUTES
+              interval_value: 0
+          - metric_type:
+              predefined_metric: MIN
+            metric_name: '[Min] Unit Price'
+            schedule_frequency:
+              interval_type: MINUTES
+              interval_value: 0
+          - metric_type:
+              predefined_metric: AVERAGE
+            metric_name: '[Average] Unit Price by Shipping State'
+            schedule_frequency:
+              interval_type: MINUTES
+              interval_value: 0
+            group_by:
+              - shipping_state

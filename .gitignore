@@ -120,3 +120,6 @@ venv.bak/
 
 # Makefile
 .Makefile
+
+#Bigeye
+bigeye/bigeye_conf.json

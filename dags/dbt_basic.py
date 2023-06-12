@@ -21,6 +21,7 @@ with DAG(
         }
     },
 ) as dag:
+    
     dbt_seed = BashOperator(
         task_id="dbt_seed",
         bash_command=f"dbt seed --profiles-dir {DBT_PROJECT_DIR} --project-dir {DBT_PROJECT_DIR}",
