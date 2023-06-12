@@ -4,7 +4,7 @@ from airflow.utils.dates import days_ago
 from glob import glob
 
 
-BIGCONFIG_FILES = str.join(",",[filename for filename in glob('/root/airflow/dbt/**/*.bigconfig.yml', recursive=True)])
+BIGCONFIG_FILES = str.join(" -ip ",[filename for filename in glob('/root/airflow/dbt/**/*.bigconfig.yml', recursive=True)])
 BIGEYE_PROD_WID = 144
 
 
@@ -17,17 +17,17 @@ with DAG(
         "env": {
             "BIGEYE_API_CRED_FILE": "/root/airflow/bigeye/bigeye_conf.json"
         }
-    },
+    }
 ) as dag:
     
     create_metrics = BashOperator(
         task_id="create_metrics",
-        bash_command=f"bigeye bigconfig apply -nq -ip {BIGCONFIG_FILES}",
+        bash_command=f"bigeye bigconfig apply -nq -ip {BIGCONFIG_FILES}"
     )
 
     run_metrics = BashOperator(
         task_id="run_metrics",
-        bash_command=f"bigeye catalog run-metrics -wid {BIGEYE_PROD_WID}",
+        bash_command=f"bigeye catalog run-metrics -wid {BIGEYE_PROD_WID}"
     )
     
     create_metrics >> run_metrics
